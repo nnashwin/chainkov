@@ -1,9 +1,9 @@
 use rand::prelude::*;
 use std::collections::HashMap;
 
-struct MarkovChain {
+#[derive(Clone, PartialEq, Debug)]
+pub struct MarkovChain {
     pub transition_prob: HashMap<String, Vec<(String, f32)>>,
-    states: Vec<String>,
 }
 
 impl MarkovChain {
@@ -45,7 +45,6 @@ impl MarkovChain {
     fn new() -> MarkovChain {
         MarkovChain {
             transition_prob: HashMap::new(),
-            states: Vec::new(),
         }
     }
 
@@ -70,25 +69,6 @@ impl MarkovChain {
     }
 }
 
-fn main() {
-    let mut m_chain = MarkovChain::new();
-    m_chain.next_state("a".to_string());
-    m_chain.add_state_choice("a", ("c".to_string(), 0.8));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("a", ("b".to_string(), 0.8));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("b", ("a".to_string(), 0.6));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("c", ("b".to_string(), 0.9));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("b", ("c".to_string(), 0.6));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("b", ("b".to_string(), 0.9));
-    println!("{:?}", m_chain.transition_prob);
-    m_chain.add_state_choice("a", ("c".to_string(), 0.4));
-    m_chain.next_state("a".to_string());
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -98,7 +78,6 @@ mod tests {
         let m = MarkovChain::new();
         let expected = MarkovChain {
             transition_prob: HashMap::new(),
-            states: vec![],
         };
 
         assert_eq!(m.transition_prob, expected.transition_prob);
