@@ -130,6 +130,8 @@ mod tests {
 
         assert_eq!(m.next_state("a".to_string()), "b");
         assert!(m.next_state("a".to_string()) != "c");
+        // test that a state that doesn't exist in the chain returns an empty string
+        assert_eq!(m.next_state("b".to_string()), "");
     }
 
     #[test]
