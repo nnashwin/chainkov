@@ -1,8 +1,10 @@
 [package]
+authors = ["Tyler Boright <ru.lai.development@gmail.com>"]
+description = "HashMap / tuple-backend Markov Chains"
+edition = "2018"
+license = "MIT"
 name = "markov"
 version = "0.1.0"
-authors = ["Tyler Boright <ru.lai.development@gmail.com>"]
-edition = "2018"
 
 [dependencies]
 rand = "0.7"
