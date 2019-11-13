@@ -1,6 +1,6 @@
 [package]
 authors = ["Tyler Boright <ru.lai.development@gmail.com>"]
-description = "HashMap / tuple-backend Markov Chains"
+description = "HashMap / Tuple-backed Markov Chains"
 edition = "2018"
 license = "MIT"
 name = "markov"
