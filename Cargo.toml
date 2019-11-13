@@ -3,7 +3,7 @@ authors = ["Tyler Boright <ru.lai.development@gmail.com>"]
 description = "HashMap / Tuple-backed Markov Chains"
 edition = "2018"
 license = "MIT"
-name = "markov"
+name = "chainkov"
 version = "0.1.0"
 
 [dependencies]
