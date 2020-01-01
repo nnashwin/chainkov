@@ -1,4 +1,4 @@
-# Markov [![Build Status](https://travis-ci.org/ru-lai/markov.svg?branch=master)](https://travis-ci.org/ru-lai/markov)
+# Chainkov [![Build Status](https://travis-ci.org/ru-lai/chainkov.svg?branch=master)](https://travis-ci.org/ru-lai/chainkov)
 > HashMap / tuple-backed Markov Chains 
 
 ## Install
