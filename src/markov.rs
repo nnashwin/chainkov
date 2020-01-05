@@ -1,6 +1,61 @@
 use rand::prelude::*;
 use std::collections::HashMap;
 
+/// chainkov Basic Usage
+/// 
+/// # Example
+/// ```
+/// use std::collections::HashMap;
+///
+/// let mut m = chainkov::MarkovChain::new();
+/// assert_eq!(m.transition_prob, HashMap::new());
+/// 
+/// m.add_state_choice("a", ("b".to_string(), 1.0));
+/// let mut new_state = &m.transition_prob.get("a").unwrap()[0];
+/// assert_eq!(new_state.0, "b".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// m.add_state_choice("b", ("c".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("b").unwrap()[0];
+/// assert_eq!(new_state.0, "c".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// m.add_state_choice("c", ("d".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("c").unwrap()[0];
+/// assert_eq!(new_state.0, "d".to_string());
+/// assert_eq!(new_state.1, 1.0);
+///
+/// m.add_state_choice("d", ("a".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("d").unwrap()[0];
+/// assert_eq!(new_state.0, "a".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// let answer_vec = m.generate_states("a".to_string(), 4);
+/// assert_eq!(answer_vec, vec!["b", "c", "d", "a"]);
+
+/// let mut answer = m.next_state("a".to_string());
+/// assert_eq!(answer, "b");
+///
+/// // incrementing when a state already exists
+/// m.increment_state("a", "b");
+/// new_state = &m.transition_prob.get("a").unwrap()[0];
+/// assert_eq!(new_state.0, "b");
+/// assert_eq!(new_state.1, 2.0);
+//
+/// // incrementing when a key exists but the state transition doesn't
+/// m.increment_state("a", "c");
+/// new_state = &m.transition_prob.get("a").unwrap()[1];
+/// assert_eq!(new_state.0, "c");
+/// assert_eq!(new_state.1, 1.0);
+///
+/// m.increment_state("e", "a");
+/// new_state = &m.transition_prob.get("e").unwrap()[0];
+/// assert_eq!(new_state.0, "a");
+/// assert_eq!(new_state.1, 1.0);
+///
+/// ```
+///
+
 #[derive(Clone, PartialEq, Debug)]
 pub struct MarkovChain {
     pub transition_prob: HashMap<String, Vec<(String, f32)>>,
