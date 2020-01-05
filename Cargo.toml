@@ -4,7 +4,7 @@ description = "HashMap / Tuple-backed Markov Chains"
 edition = "2018"
 license = "MIT"
 name = "chainkov"
-version = "0.1.0"
+version = "1.0.0"
 
 [dependencies]
 rand = "0.7"
