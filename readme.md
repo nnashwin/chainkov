@@ -31,7 +31,7 @@ m.add_state_choice("a", ("b".to_string(), 1.0));
 m.add_state_choice("b", ("c".to_string(), 1.0));
 // MarkovChain { transition_prob: {"a": [("b", 1.0)], "b": [("c", 1.0)]} }
 
-m.add_state_choice("c", ("d".to_string(), 1.0));
+m.add_state_choice("c", ("a".to_string(), 1.0));
 // MarkovChain { transition_prob: {"c": [("a", 1.0)], "a": [("b", 1.0)], "b": [("c", 1.0)]} }
 
 m.generate_states("a".to_string(), 4);
@@ -39,4 +39,20 @@ m.generate_states("a".to_string(), 4);
 
 m.next_state("a".to_string());
 // "b"
+
+// incrementing when a state already exists
+m.increment_state("a", "b");
+// MarkovChain { transition_prob: {"c": [("a", 1.0)], "a": [("b", 2.0)], "b": [("c", 1.0)]} }
+
+// incrementing when a key exists but the state transition doesn't
+m.increment_state("a", "c");
+// MarkovChain { transition_prob: {"c": [("a", 1.0)], "a": [("b", 2.0), ("c", 1.0)], "b": [("c", 1.0)]} }
+
+// incrementing when a key exists but the state transition doesn't
+m.increment_state("a", "c");
+// MarkovChain { transition_prob: {"c": [("a", 1.0)], "a": [("b", 2.0), ("c", 1.0)], "b": [("c", 1.0)]} }
+
+// incrementing when there is a new state in the MarkovChain
+m.increment_state("e", "a");
+// MarkovChain { transition_prob: {"e": [("a", 1.0)],c": [("a", 1.0)], "a": [("b", 2.0), ("c", 1.0)], "b": [("c", 1.0)]} }
 ```

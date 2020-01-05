@@ -48,6 +48,7 @@ use std::collections::HashMap;
 /// assert_eq!(new_state.0, "c");
 /// assert_eq!(new_state.1, 1.0);
 ///
+/// // incrementing when there is a new state in the MarkovChain
 /// m.increment_state("e", "a");
 /// new_state = &m.transition_prob.get("e").unwrap()[0];
 /// assert_eq!(new_state.0, "a");
