@@ -8,7 +8,7 @@ license = "MIT OR Apache-2.0"
 name = "chainkov"
 readme = "readme.md"
 repository = "https://github.com/ru-lai/chainkov"
-version = "1.1.0"
+version = "1.1.1"
 
 [badges]
 travis-ci = { repository = "ru-lai/chainkov" }
