@@ -54,5 +54,5 @@ m.increment_state("a", "c");
 
 // incrementing when there is a new state in the MarkovChain
 m.increment_state("e", "a");
-// MarkovChain { transition_prob: {"e": [("a", 1.0)],c": [("a", 1.0)], "a": [("b", 2.0), ("c", 1.0)], "b": [("c", 1.0)]} }
+// MarkovChain { transition_prob: {"e": [("a", 1.0)], "c": [("a", 1.0)], "a": [("b", 2.0), ("c", 1.0)], "b": [("c", 1.0)]} }
 ```
