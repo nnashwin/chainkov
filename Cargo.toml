@@ -2,9 +2,16 @@
 authors = ["Tyler Boright <ru.lai.development@gmail.com>"]
 description = "HashMap / Tuple-backed Markov Chains"
 edition = "2018"
-license = "MIT"
+exclude = [".gitignore", "/.travis.yml"]
+keywords = ["data-structure", "markov"]
+license = "MIT OR Apache-2.0"
 name = "chainkov"
-version = "0.1.0"
+readme = "readme.md"
+repository = "https://github.com/ru-lai/chainkov"
+version = "1.1.3"
+
+[badges]
+travis-ci = { repository = "ru-lai/chainkov" }
 
 [dependencies]
 rand = "0.7"

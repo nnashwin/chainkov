@@ -1,6 +1,62 @@
 use rand::prelude::*;
 use std::collections::HashMap;
 
+/// chainkov Basic Usage
+/// 
+/// # Example
+/// ```
+/// use std::collections::HashMap;
+///
+/// let mut m = chainkov::MarkovChain::new();
+/// assert_eq!(m.transition_prob, HashMap::new());
+/// 
+/// m.add_state_choice("a", ("b".to_string(), 1.0));
+/// let mut new_state = &m.transition_prob.get("a").unwrap()[0];
+/// assert_eq!(new_state.0, "b".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// m.add_state_choice("b", ("c".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("b").unwrap()[0];
+/// assert_eq!(new_state.0, "c".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// m.add_state_choice("c", ("d".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("c").unwrap()[0];
+/// assert_eq!(new_state.0, "d".to_string());
+/// assert_eq!(new_state.1, 1.0);
+///
+/// m.add_state_choice("d", ("a".to_string(), 1.0));
+/// new_state = &m.transition_prob.get("d").unwrap()[0];
+/// assert_eq!(new_state.0, "a".to_string());
+/// assert_eq!(new_state.1, 1.0);
+/// 
+/// let answer_vec = m.generate_states("a".to_string(), 4);
+/// assert_eq!(answer_vec, vec!["b", "c", "d", "a"]);
+
+/// let mut answer = m.next_state("a".to_string());
+/// assert_eq!(answer, "b");
+///
+/// // incrementing when a state already exists
+/// m.increment_state("a", "b");
+/// new_state = &m.transition_prob.get("a").unwrap()[0];
+/// assert_eq!(new_state.0, "b");
+/// assert_eq!(new_state.1, 2.0);
+//
+/// // incrementing when a key exists but the state transition doesn't
+/// m.increment_state("a", "c");
+/// new_state = &m.transition_prob.get("a").unwrap()[1];
+/// assert_eq!(new_state.0, "c");
+/// assert_eq!(new_state.1, 1.0);
+///
+/// // incrementing when there is a new state in the MarkovChain
+/// m.increment_state("e", "a");
+/// new_state = &m.transition_prob.get("e").unwrap()[0];
+/// assert_eq!(new_state.0, "a");
+/// assert_eq!(new_state.1, 1.0);
+///
+/// ```
+///
+
 #[derive(Clone, PartialEq, Debug)]
 pub struct MarkovChain {
     pub transition_prob: HashMap<String, Vec<(String, f32)>>,
@@ -29,6 +85,32 @@ impl MarkovChain {
             prob_vec.push(probability);
             self.transition_prob.insert(key.to_string(), prob_vec);
         }
+    }
+
+    pub fn increment_state(&mut self, key: &str, state: &str) {
+        if self.transition_prob.contains_key(key) {
+            match self
+                .transition_prob
+                .get_mut(key)
+                .unwrap()
+                .iter()
+                .position(|x| x.0 == state)
+            {
+                // increment the state if it exists
+                Some(x) => {
+                    let mut prob_to_increment = self.transition_prob.get_mut(key).unwrap().get_mut(x).unwrap();
+                    prob_to_increment.1 += 1.0;
+                }
+                // set the state to one if it doesn't
+                None => self.transition_prob.get_mut(key).unwrap().push((state.to_string(), 1.0)),
+            }
+        } else {
+            // add a new state to the key if the key doesn't exist
+            let mut prob_vec = vec![];
+            prob_vec.push((state.to_string(), 1.0));
+            self.transition_prob.insert(key.to_string(), prob_vec);
+        }
+        
     }
 
     pub fn generate_states(&self, mut current_state: String, num_of_states: u16) -> Vec<String> {
@@ -103,7 +185,7 @@ mod tests {
 
     #[test]
     fn test_next_state() {
-        let mut m = MarkovChain::new(); 
+        let mut m = MarkovChain::new();
         m.add_state_choice("a", ("b".to_string(), 1.0));
         m.add_state_choice("a", ("c".to_string(), 0.0));
 
@@ -115,12 +197,32 @@ mod tests {
 
     #[test]
     fn test_generate_states() {
-        let mut m = MarkovChain::new(); 
+        let mut m = MarkovChain::new();
         m.add_state_choice("a", ("b".to_string(), 1.0));
         m.add_state_choice("b", ("c".to_string(), 1.0));
         m.add_state_choice("c", ("a".to_string(), 1.0));
 
         assert_eq!(m.generate_states("a".to_string(), 6), vec!["b", "c", "a", "b", "c", "a"]);
         assert!(m.next_state("a".to_string()) != "c");
+    }
+
+    #[test]
+    fn test_increment_state()  {
+        let mut actual_m = MarkovChain::new();   
+        let mut expected_m = HashMap::new();
+        expected_m.insert("a".to_string(), vec![("b".to_string(), 1.0), ("c".to_string(), 2.0)]);
+
+        actual_m.increment_state("a", "b");
+        actual_m.add_state_choice("a", ("c".to_string(), 2.0));
+
+        assert_eq!(expected_m, actual_m.transition_prob, "insert adds values that have a key and no state and set them to 1.0");
+
+        actual_m.increment_state("a", "c");
+        expected_m.insert("a".to_string(), vec![("b".to_string(), 1.0), ("c".to_string(), 3.0)]);
+        assert_eq!(expected_m, actual_m.transition_prob, "insert increments values that already have keys and state in the transition prob");
+
+        expected_m.insert("b".to_string(), vec![("a".to_string(), 1.0)]);
+        actual_m.increment_state("b", "a");
+        assert_eq!(expected_m, actual_m.transition_prob, "insert adds values that don't have a key or state and sets them to 1.0");
     }
 }
