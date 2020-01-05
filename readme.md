@@ -3,7 +3,7 @@
 
 ## Install
 
-- Add the dependency to the Cargo.toml of your project
+1. Add the dependency to the Cargo.toml of your project
 
 ```
 // Cargo.toml
@@ -11,7 +11,7 @@
 chainkov = "0.1.0"
 ```
 
-- Run cargo build
+2. Run cargo build
 ```
 cargo build
 ```
