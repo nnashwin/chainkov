@@ -163,10 +163,10 @@ mod tests {
 
         actual_m.increment_state("a", "c");
         expected_m.insert("a".to_string(), vec![("b".to_string(), 1.0), ("c".to_string(), 3.0)]);
-        assert_eq!(expected_m, actual_m.transition_prob, "insert increments values that already exist");
+        assert_eq!(expected_m, actual_m.transition_prob, "insert increments values that already have keys and state in the transition prob");
 
         expected_m.insert("b".to_string(), vec![("a".to_string(), 1.0)]);
         actual_m.increment_state("b", "a");
-        assert_eq!(expected_m, actual_m.transition_prob, "insert adds values that don't have a key and have no state and sets them to 1.0");
+        assert_eq!(expected_m, actual_m.transition_prob, "insert adds values that don't have a key or state and sets them to 1.0");
     }
 }
